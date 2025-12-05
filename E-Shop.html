@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical E-Commerce - Tema Hitam Putih</title>
+    <style>
+        /* Tema Hitam Putih dengan Gradient untuk Lebih Menarik */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-top: 70px; /* Padding untuk navbar fixed agar konten tidak tertutup */
+            background: linear-gradient(135deg, #000 0%, #111 100%); /* Gradient hitam */
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden; /* Hindari scroll horizontal */
+        }
+
+        /* Navbar Fixed di Atas Layar */
+        #navbar {
+            position: fixed; /* Fixed positioning: tetap di atas layar saat scroll */
+            top: 0;
+            width: 100%;
+            background-color: #000;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: block;
+            position: relative;
+        }
+
+        /* Efek Menekan/Klik pada Menu Navbar */
+        .nav-link:active {
+            background-color: #555; /* Perubahan warna background */
+            color: #ccc; /* Warna teks berubah untuk efek tersentuh */
+            transform: scale(0.95); /* Scale kecil */
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.4); /* Shadow lebih gelap */
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Hamburger Menu untuk Layar Kecil */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            transition: 0.3s;
+        }
+
+        /* Responsivitas Navbar: Menu Hilang dan Jadi List di ≤600px */
+        @media (max-width: 600px) {
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #000;
+                flex-direction: column;
+                gap: 0;
+                display: none; /* Tersembunyi default */
+                padding: 1rem 0;
+                box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+            }
+            .nav-menu.active {
+                display: flex; /* Muncul saat aktif */
+            }
+            .nav-link {
+                padding: 1rem;
+                text-align: center;
+                border-bottom: 1px solid #333;
+            }
+            .hamburger {
+                display: flex;
+            }
+        }
+
+        /* Hero Section dengan Gambar Background */
+        .hero {
+            background-image: url('https://via.placeholder.com/1200x400?text=Ganti+dengan+Gambar+Header+Anda'); /* Placeholder gambar, ganti dengan gambar Anda */
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Overlay gelap untuk teks lebih jelas */
+        }
+
+        .hero h2 {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            position: relative;
+            z-index: 1;
+            font-size: 1.2rem;
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline-block !important; /* Anti melebar ke ujung */
+            border-right: 2px solid #fff;
+            animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 30ch; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #fff; }
+        }
+
+        /* Produk Section (Layout Vertikal) */
+        .products {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: #222;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .product-card.out-of-stock {
+            opacity: 0.5; /* Opacity menurun jika stok habis */
+        }
+
+        .product-card:hover:not(.out-of-stock) {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-price {
+            margin: 0.5rem 0;
+        }
+
+        .product-price del {
+            color: #ccc;
+        }
+
+        .product-stock {
+            margin: 0.5rem 0;
+            font-weight: bold;
+        }
+
+        .product-stock.available {
+            color: #0f0; /* Hijau untuk tersedia */
+        }
+
+        .product-stock.out-of-stock {
+            color: #f00; /* Merah untuk habis */
+        }
+
+        .btn {
+            background-color: #fff;
+            color: #000;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover:not(:disabled) {
+            background-color: #ccc;
+            transform: scale(1.05);
+        }
+
+        .btn:disabled {
+            background-color: #666;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Responsivitas Produk */
+        @media (min-width: 768px) {
+            .product-grid {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .product-card {
+                flex: 1 1 calc(33.333% - 2rem);
+            }
+        }
+
+        /* Section About: Konten di Kiri, Teks di Kanan, Warna Berbeda (#333) */
+        .about {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #333; /* Warna berbeda */
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .about-left {
+            flex: 1;
+            text-align: left;
+        }
+
+        .about-right {
+            flex: 1;
+            text-align: left;
+        }
+
+        /* Responsivitas About */
+        @media (max-width: 768px) {
+            .about {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Section Kontak: Teks di Kiri dan Kanan, Warna Abu-Abu Tua (#444) untuk Dibedakan dari Footer */
+        .contact {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #444; /* Abu-abu tua, berbeda dari footer #000 */
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .contact-left {
+            flex: 1;
+            text-align: left;
+        }
+
+        .contact-right {
+            flex: 1;
+            text-align: left;
+        }
+
+        /* Responsivitas Kontak */
+        @media (max-width: 768px) {
+            .contact {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* Tombol Scroll to Top */
+        #scrollToTop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        #scrollToTop:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsivitas Umum */
+        @media (max-width: 480px) {
+            .hero, .products, .about, .contact {
+                padding: 1rem;
+            }
+            .product-card {
+                padding: 0.5rem;
+            }
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <!-- Navbar Fixed dengan Logo -->
+    <header>
+        <nav id="navbar">
+            <div class="nav-container">
+                <h1 class="logo">E-Shop</h1>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#products" class="nav-link">Produk</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#contact" class="nav-link">Kontak</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h2>E-Shop</h2>
+        <p>masih bingung mau jualan apaan kocak</p> <!-- Efek mengetik disesuaikan -->
+    </section>
+
+    <main>
+        <section id="products" class="products">
+            <h2>Produk Kami</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200?text=Produk+1" alt="Produk 1">
+                    <h3>Produk 1</h3>
+                    <div class="product-price">
+                        <del>Rp 120.000</del> <br>
+                        Harga Promo: Rp 100.000
+                    </div>
+                    <div class="product-stock available">Stok: 10</div>
+                    <a href="https://wa.me/6281234567890?text=Saya%20ingin%20memesan%20produk%20dengan%20kode:%20PROD001" class="btn">Beli Sekarang</a>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200?text=Produk+2" alt="Produk 2">
+                    <h3>Produk 2</h3>
+                    <div class="product-price">
+                        <del>Rp 180.000</del> <br>
+                        Harga Promo: Rp 150.000
+                    </div>
+                    <div class="product-stock available">Stok: 5</div>
+                    <a href="https://wa.me/6281234567890?text=Saya%20ingin%20memesan%20produk%20dengan%20kode:%20PROD002" class="btn">Beli Sekarang</a>
+                </div>
+                <div class="product-card out-of-stock">
+                    <img src="https://via.placeholder.com/300x200?text=Produk+3" alt="Produk 3">
+                    <h3>Produk 3</h3>
+                    <div class="product-price">
+                        <del>Rp 240.000</del> <br>
+                        Harga Promo: Rp 200.000
+                    </div>
+                    <div class="product-stock out-of-stock">Stok Habis</div>
+                    <button class="btn" disabled>Beli Sekarang</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200?text=Produk+4" alt="Produk 4">
+                    <h3>Produk 4</h3>
+                    <div class="product-price">
+                        <del>Rp 300.000</del> <br>
+                        Harga Promo: Rp 250.000
+                    </div>
+                    <div class="product-stock available">Stok: 8</div>
+                    <a href="https://wa.me/6281234567890?text=Saya%20ingin%20memesan%20produk%20dengan%20kode:%20PROD004" class="btn">Beli Sekarang</a>
+                </div>
+                <div class="product-card out-of-stock">
+                    <img src="https://via.placeholder.com/300x200?text=Produk+5" alt="Produk 5">
+                    <h3>Produk 5</h3>
+                    <div class="product-price">
+                        <del>Rp 360.000</del> <br>
+                        Harga Promo: Rp 300.000
+                    </div>
+                    <div class="product-stock out-of-stock">Stok Habis</div>
+                    <button class="btn" disabled>Beli Sekarang</button>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x200?text=Produk+6" alt="Produk 6">
+                    <h3>Produk 6</h3>
+                    <div class="product-price">
+                        <del>Rp 420.000</del> <br>
+                        Harga Promo: Rp 350.000
+                    </div>
+                    <div class="product-stock available">Stok: 12</div>
+                    <a href="https://wa.me/6281234567890?text=Saya%20ingin%20memesan%20produk%20dengan%20kode:%20PROD006" class="btn">Beli Sekarang</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="about-left">
+                <h2>About Us</h2>
+                <p>Kami adalah toko online yang berkomitmen untuk menyediakan produk berkualitas tinggi dengan harga terjangkau. Tim kami terdiri dari para ahli yang berdedikasi untuk memberikan pengalaman belanja terbaik bagi pelanggan.</p>
+            </div>
+            <div class="about-right">
+                <p>Dengan fokus pada inovasi dan kepuasan pelanggan, E-Shop telah menjadi pilihan utama bagi banyak orang. Kami percaya bahwa belanja online harus mudah, aman, dan menyenangkan.</p>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="contact-left">
+                <h2>Kontak</h2>
+                <p>Email: info@eshop.com</p>
+            </div>
+            <div class="contact-right">
+                <p>WhatsApp: +62 812-3456-7890</p>
+                <p>Instagram: @eshop_official</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+
