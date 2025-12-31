@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNSTWN</title>
+<link rel="icon" href="Gambar Home/D.gif" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+    /* ====== GLOBAL ====== */
+    body {
+        font-family: 'Poppins', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    header {
+        background: linear-gradient(to bottom, #007bff, #0056b3);
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 200px;
+    }
+
+    header h1 {
+        font-size: clamp(3em, 8vw, 5em);
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        margin: 0 0 5px 0;
+        z-index: 2;
+        position: relative;
+    }
+
+    header p {
+    display: inline-block;
+    max-width: 92vw;              /* kunci lebar aman HP kecil */
+    white-space: nowrap;
+    overflow: hidden;
+
+    font-size: clamp(0.75rem, 4vw, 1.5rem);
+    margin: 0 auto;
+
+    color: #ffff00;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+
+    /* typing effect */
+    width: 0;
+    animation: typing 2.5s steps(40, end) forwards;
+    }
+
+
+    header p::after {
+        content: '|';
+        color: #ffff00;
+        animation: blink-caret 0.75s step-end infinite 2.5s;
+    }
+
+    @keyframes typing { from { width: 0; } to { width: 100%; } }
+    @keyframes blink-caret { from,to { opacity:0;} 50%{opacity:1;} }
+
+    /* ====== CLOUDS ====== */
+    .clouds {
+        position: absolute;
+        top: 0; left:0;
+        width:100%; height:100%;
+        overflow:hidden;
+        z-index:1;
+    }
+    .cloud {
+        position:absolute;
+        background: rgba(255,255,255,0.6);
+        border-radius:50%;
+        animation: moveCloud 20s linear infinite;
+    }
+    .cloud:nth-child(1){ width:100px;height:50px;top:20%; left:-100px; animation-delay:0s; }
+    .cloud:nth-child(2){ width:150px;height:75px;top:40%; left:-150px; animation-delay:5s; }
+    .cloud:nth-child(3){ width:120px;height:60px;top:60%; left:-120px; animation-delay:10s; }
+    @keyframes moveCloud { from { transform: translateX(-100px);} to { transform: translateX(calc(100vw + 100px)); } }
+
+    /* ====== NAVBAR ====== */
+    nav {
+        background-color: #333;
+        padding: 15px 25px;
+        display: flex;
+        justify-content: space-between; /* <-- FIXED typo */
+        align-items: center;
+        position: sticky;
+        top:0;
+        z-index:999;
+        flex-wrap: wrap;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo img {
+        width: 50px;
+        border-radius:50%;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+
+    /* Logo di navbar jadi tombol bulat */
+.logo a {
+    display: inline-block;      /* supaya bisa diberi ukuran */
+    width: 50px;                /* sesuaikan ukuran logo */
+    height: 50px;
+    border-radius: 50%;         /* buat bulat */
+    overflow: hidden;           /* supaya gambar tidak keluar dari lingkaran */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.logo a img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;          /* supaya gambar memenuhi lingkaran */
+}
+
+.logo a:hover {
+    transform: scale(1.1);      /* efek hover membesar */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* efek tombol */
+}
+
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-weight:600;
+        padding: 10px 15px;
+        border-radius: 8px;
+        border: 2px solid #333;
+        background-color: #333;
+        transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+        color:#007bff;
+        border-color:#007bff;
+        transform: scale(1.05);
+    }
+
+    .follow-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color:red;
+        color:white;
+        padding: 10px 18px;
+        border-radius:8px;
+        font-weight:700;
+        text-decoration:none;
+        transition:0.3s;
+    }
+
+    .follow-btn:hover { background-color:darkred; transform: scale(1.05); }
+
+    .hamburger {
+        display: none;
+        font-size: 32px;
+        background:none;
+        border:none;
+        cursor:pointer;
+        color:white;
+        margin-left: 15px;
+    }
+
+    /* ====== SECTIONS ====== */
+    .sections-container {
+        justify-content: space-around;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding:20px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px; /* jarak antar kartu */
+    }
+
+    .section-card {
+        background-color:white;
+        border-radius:12px;
+        margin:15px;
+        flex:1 1 45%;
+        min-width:280px;
+        box-shadow:0 6px 12px rgba(0,0,0,0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        font-size: 15px;
+        break-inside: avoid;      /* mencegah kartu terpotong */
+        margin-bottom: 20px;      /* jarak antar kartu ke bawah */
+    }
+
+    .work-experience {
+        max-height: 830px; /* tinggi maksimal kotak */
+        display: flex;
+        flex-direction: column;
+        background-color:white;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        border-radius:12px;
+        margin:15px;
+        flex:1 1 45%;
+        min-width:280px;
+        font-size: 15px;
+        break-inside: avoid;      /* mencegah kartu terpotong */
+        margin-bottom: 20px;      /* jarak antar kartu ke bawah */
+        margin-bottom: 0px !important;
+        margin-top: 6px;
+        text-align: justify !important;
+        text-justify: inter-word;
+        width: 100%
+    }
+
+    .work-experience h4 {
+         margin-bottom: 0px !important;
+        margin-top: 6px;
+        text-align: justify !important;
+        text-justify: inter-word;
+        width: 100%;
+    }
+
+    .work-experience p {
+       font-size: 15px !important;        /* memperkecil ukuran tulisan */
+        text-align: justify !important; /* agar rata kiri dan kanan */
+        line-height: 1.7;       /* biar lebih enak dibaca */
+        margin-top: 0px; 
+    }
+
+    .work-experience .card-content {
+        overflow-y: auto;   /* biar konten di dalam bisa discroll */
+    }
+
+    
+    .work-experience {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .work-experience:hover .card-header,
+    .work-experience:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    }
+
+    .work-experience .card-content {
+        pointer-events: auto;
+    }
+    .work-experience:hover {
+        pointer-events: auto;
+    }
+
+    /* Layout untuk desktop */
+.container-section {
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+}
+
+/* Supaya tingginya tetap sama */
+.about-me,
+.work-experience {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Saat mode mobile, ubah jadi bertumpuk */
+@media (max-width: 768px) {
+    .container-section {
+        display: block; /* balik ke susunan vertikal */
+    }
+
+    .about-me,
+    .work-experience {
+        margin-bottom: 20px; /* beri jarak antar kartu */
+    }
+}
+
+@media (max-width: 360px) {
+    header p {
+        font-size: 0.8rem;
+        max-width: 95vw;
+    }
+}
+
+
+    .section-card h4 {
+    margin-bottom: 0px !important;
+    margin-top: 6px;
+    text-align: justify !important;
+    text-justify: inter-word;
+    width: 100%;
+    }
+
+    .section-card p {
+        font-size: 15px !important;        /* memperkecil ukuran tulisan */
+        text-align: justify !important; /* agar rata kiri dan kanan */
+        line-height: 1.7;       /* biar lebih enak dibaca */
+        margin-top: 0px;
+    }
+
+
+    .section-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow:0 10px 20px rgba(0,0,0,0.25);
+    }
+
+    .card-header { background-color:#0056b3; color:white; padding:15px; border-radius:12px 12px 0 0; margin:-1px -1px 0 -1px; }
+    .card-content { padding:20px; }
+
+    #contact {
+        background-color: #007bff;
+        color:white;
+        padding:clamp(20px,5vw,40px);
+        max-width:1200px;
+        margin:0 auto;
+        box-shadow:0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .portfolio-item {
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+        margin-bottom:20px;
+        border-radius:8px;
+        background-color:#fafafa;
+        padding:15px;
+        border:1px solid #eee;
+    }
+
+    .portfolio-item img { margin-bottom:15px; border-radius:50%; max-width:100px; width:100%; }
+
+    .portfolio-item a, .activities-link, .skills-link {
+        display:inline-block;
+        margin-top:10px;
+        padding:8px 15px;
+        background-color:#007bff;
+        color:white;
+        text-decoration:none;
+        border-radius:6px;
+        transition:0.3s;
+    }
+
+    .portfolio-item a:hover, .activities-link:hover, .skills-link:hover { background-color:#0056b3; transform:scale(1.05); }
+
+    footer {
+        background-color:#333;
+        color:white;
+        text-align:center;
+        padding:15px;
+    }
+
+    body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    }
+
+
+    .scroll-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width:50px;
+        height:50px;
+        border-radius:50%;
+        background-color:#007bff;
+        color:white;
+        border:none;
+        cursor:pointer;
+        display:none;
+        z-index:1000;
+    }
+
+    .scroll-btn.up::before { content:'↑'; font-size:24px; line-height:50px; }
+    .scroll-btn.down::before { content:'↓'; font-size:24px; line-height:50px; }
+
+    /* ====== RESPONSIVE ====== */
+    @media(max-width:600px){
+        .hamburger { display:block; }
+        .nav-links { display:none; flex-direction:column; width:100%; margin-top:10px; }
+        .nav-links.active { display:flex; }
+        .follow-btn {
+            width:42px; height:42px; font-size:0; padding:0; border-radius:50%;
+        }
+        .follow-btn::before { content:"❤"; font-size:22px; line-height:42px; display:flex; justify-content:center; align-items:center; }
+        .nav-links.active ~ .follow-btn {
+        display: none;
+    }
+    }
+
+        /* Foto About default (mobile) */
+        .about-photo {
+            width: 100%;
+            max-width: 260px;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            margin: 20px auto;
+    }
+
+        /* Foto About ukuran Desktop */
+        @media (min-width: 1080px) {
+        .about-photo {
+            max-width: 400px;
+            height: 400px;
+            }
+        }
+
+
+            /* Ukuran untuk Desktop */
+            @media (min-width: 1080px) {
+            .about-photo {
+                max-width: 400px;  /* ukuran desktop */
+                height: 400px;
+            }
+    }
+
+
+            /* ===== FIX MOBILE UNTUK SECTIONS ===== */
+            @media (max-width: 768px) {
+            .sections-container {
+                display: grid;
+                grid-template-columns: 1fr; /* jadi satu kolom */
+                gap: 20px;
+                padding: 10px;
+            }
+
+            .section-card,
+            .work-experience {
+                margin: 0; /* biar rapih */
+                width: 100%;
+            }
+    }
+
+            @media (max-width: 768px) {
+    .work-experience .card-content {
+        max-height: none !important;
+        overflow-y: visible !important;
+    }
+
+    .work-experience {
+        max-height: none !important;
+    }
+
+    @media (max-width: 600px) {
+    header p {
+        white-space: nowrap;      /* tetap satu baris */
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
+
+        /* FONT AUTO MENYESUAIKAN LAYAR */
+        font-size: clamp(0.9rem, 4.5vw, 1.2rem);
+
+        /* typing tetap jalan */
+        animation: typing 2.5s steps(39, end) forwards;
+    }
+}
+
+}
+
+</style>
+</head>
+<body>
+<header>
+    <div class="clouds">
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+    </div>
+    <h1>DNSTWN</h1>
+    <p>Selamat datang di website pribadi saya!</p>
+</header>
+
+<nav id="main-nav">
+    <div class="logo">
+        <img src="Gambar Home/D.gif" alt="logo">
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    <div class="nav-links">
+        <a href="index.html" onclick="event.preventDefault(); alert('Kan ini menu homenya sayang 😘')">Home</a>
+        <a href="Projects.html">Projects</a>
+        <a href="E-Shop.html">Store</a>
+        <a href="blog.html">Blog</a>
+    </div>
+    <a class="follow-btn" href="https://instagram.com/dnstwn._" target="_blank">Follow</a>
+</nav>
+
+<div class="sections-container">
+        <section id="about" class="section-card">
+            <div class="card-header">
+                <h2>About Me</h2>
+            </div>
+            <div class="card-content">
+                <img src="Gambar Home/Gambar dendi .png" alt="Foto Anda" class="about-photo">
+                 <p>Saya adalah mahasiswa aktif UIN Sunan Gunung Djati Bandung, Fakultas Ilmu Sosial dan Ilmu Politik, Jurusan Ilmu Politik. Berpengalaman dalam berorganisasi serta memiliki kemampuan komunikasi yang baik. Terbiasa bekerja dalam tim, mampu beradaptasi dengan berbagai situasi, serta memiliki keterampilan manajemen waktu yang baik. Berorientasi pada tanggung jawab dan siap menghadapi tantangan di dunia kerja.</p>
+                 <a href="https://i1.sndcdn.com/artworks-000140532587-c3uj9a-t500x500.jpg" class="activities-link">Lihat Lebih Lanjut</a>
+            </div>
+        </section>
+        
+        <section id="portfolio" class="work-experience">
+            <div class="card-header">
+                <h2>Work Experience</h2>
+            </div>
+            <div class="card-content">
+                <div class="portfolio-item">
+                
+                    <h4><li>PMII Rayon FISIP UIN SGD Bandung (2021-2024)</li></h4>
+                    <p>Aktif dalam organisasi Pergerakan Mahasiswa Islam Indonesia (PMII) Rayon Fakultas Ilmu Sosial dan Ilmu Politik UIN SGD Bandung. Pernah Menjabat sebagai wakil ketua organisasi priode (2023-2024), membantu saya dalam meningkatkan mutu kepemimpinan terutama dalam mengkonsolidasikan program kerja, komunikasi, dan jaringan politik kampus.</p>
+
+                    <h4><li>Magang Bawaslu Kota Bandung (2024)</li></h4>
+                    <p> Memiliki pengalaman magang di Bawaslu Kota Bandung, membantu tahapan penyelenggaraan pra-pemilu. seperti menjadi operator, photografer, dan resepsionis selama kegiatan magang berlangsung.</p>
+
+                    <h4><li>PTPS Kel. Cibinong Kab. Bogor (2024)</li></h4>
+                    <p>Aktif dalam organisasi Pergerakan Mahasiswa Islam Indonesia (PMII) Rayon Fakultas Ilmu Sosial dan Ilmu Politik UIN SGD Bandung. Menjabat sebagai wakil ketua organisasi, membantu saya dalam meningkatkan mutu kepemimpinan terutama dalam mengkonsolidasikan program kerja, komunikasi, dan jaringan politik kampus.</p>
+
+                    <h4><li>HMJ Ilmu Politik/UIN SGD Bandung (2023-2024)</li></h4>
+                    <p>Aktif dalam organisasi kampus ditingkat jurusan, menjabat sebagai anggota PAO HMJ ilmu politik UIN Sunan Gunung Djati Bandung. membantu saya dalam memahami tata cara berorganisasi ditingkat juru</p>
+
+                    <h4><li>Kemenkastrat DEMA UIN SGD Bandung (2022-2023)</li></h4>
+                    <p> Aktif dalam organisasi ditingkat universitas, menjabat sebagai staffsus di KEMENKASTRAT (kementrian Kajian Isu Strategis) membantu saya lebih mendalami tata cara berorganisasi ditingkat universitas. tentu membantu saya untuk lebih mengeksplorasi lebih jauh tentang kepemimpinan, komunikasi, dan hubungan antara mahasiswa-kampus serta elemen lainnya.</p>
+
+                    <h4><li>Osis MAN 1 Bogor</li></h4>
+                    <p> Aktif dalam organisasi sekolah, menjabat sebagai ketua, membantu saya memiliki pengalaman dalam memimpin dan mengordinasikan progam sekolah</p>
+                   
+                </div>
+                
+            </div>
+        </section>
+
+        
+        <section id="activities" class="section-card">
+            <div class="card-header">
+                <h2>Education</h2>
+            </div>
+            <div class="card-content">
+                <ul>
+                    <li>UIN Sunan Gunung Djati Bandung (2021-2026)</li>
+                    <li>MAN 1 BOGOR (2018-2021)</li>
+                    <li>MTS AL-ASIYAH Cibinong (2015-2018)</li>
+                    <li>SDN Cibinong 03 (2009-2015)</li>
+                </ul>
+            </div>
+        </section>
+        
+        </section>
+
+        <section id="skills" class="section-card">
+            <div class="card-header">
+                <h2>Skills</h2>
+            </div>
+            <div class="card-content">
+                <ul>
+                    <li><strong>Technical:</strong> [Word, Excel, PPT, PhotoShop, Canva, Capcut,]</li>
+                    <li><strong>Soft Skills:</strong> [Team Work, Communication,Time Management, Strategic Thinking and Planing, Presentation Skills]</li>
+                    <li><strong>Language Skills</strong> [Indonesia (Native), English (Advance)]</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <section id="contact">
+        <h2>Kontak</h2>
+        <p>Email: dendisetiawan253@gmail.com</p>
+        <p>LinkedIn: [link LinkedIn]</p>
+        <p>Instagram: @dnstwn._</p>
+    </section>
+    
+
+    
+   
+    
+    <script>
+        const nav = document.getElementById('main-nav');
+        const navLinks = nav.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                nav.classList.add('clicked');
+                setTimeout(() => nav.classList.remove('clicked'), 1000);
+            });
+        });
+        
+  document.querySelectorAll('nav a').forEach(anchor => {
+    // Cek apakah href dimulai dengan '#' (tautan internal)
+    if (anchor.getAttribute('href').startsWith('#')) { 
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault(); // Hanya tautan internal yang dihentikan!
+            
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) { 
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+});
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('fade-in');
+            });
+        });
+        document.querySelectorAll('.section-card').forEach(card => observer.observe(card));
+        
+        const scrollUp = document.getElementById('scrollUp');
+        const scrollDown = document.getElementById('scrollDown');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                scrollUp.style.display = 'block';
+                scrollDown.style.display = 'block';
+            } else {
+                scrollUp.style.display = 'none';
+                scrollDown.style.display = 'none';
+            }
+        });
+        
+        
+    </script>
+
+<footer>
+    <p>&copy; 2025 Dendi Setiawan. Semua hak dilindungi.</p>
+</footer>
+
+<script>
+function toggleMenu() {
+    document.querySelector(".nav-links").classList.toggle("active");
+}
+</script>
+
+<script>
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+</script>
+
+<script>
+document.addEventListener('keydown', function(e) {
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && ["I","C","J"].includes(e.key)) ||
+        (e.ctrlKey && e.key === "U")
+    ) {
+        e.preventDefault();
+        alert("Akses source dibatasi.");
+    }
+});
+</script>
+
+
+</body>
+</html>
+
