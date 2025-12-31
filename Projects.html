@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects - DNSTWN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(to bottom, #007bff, #0056b3);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 230px;
+        }
+        header h1 {
+            font-size: clamp(3em, 8vw, 5em);
+            font-weight: 700;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        
+        .typing-text {
+            font-size: clamp(1.1em, 4vw, 1.7em);
+            margin-top: 10px;
+            font-weight: 700;
+            background: linear-gradient(to right, #ffff00, #fff898, #fff200);
+            -webkit-background-clip: text;
+            color: transparent;
+            white-space: normal; /* ❗ agar teks bisa turun ke bawah */
+            text-align: center;
+            display: inline-block;
+            position: relative;
+            z-index: 4;
+            max-width: 90%; /* ❗ supaya tidak melebar melebihi layar */
+        }
+
+
+
+        .typing-text::after {
+            content: "|";
+            margin-left: 4px;
+            opacity: 1;
+            animation: blink 0.7s infinite;
+            color: #fff;
+            filter: drop-shadow(0 0 4px #fff200);
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .clouds { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; }
+        .cloud { position: absolute; background: rgba(255, 255, 255, 0.6); border-radius: 50%; z-index: 1; animation: moveCloud 20s linear infinite; }
+        .cloud:nth-child(1) { width: 100px; height: 50px; top: 20%; left: -150px; animation-delay: 0s; }
+        .cloud:nth-child(2) { width: 150px; height: 75px; top: 40%; left: -250px; animation-delay: 5s; }
+        .cloud:nth-child(3) { width: 120px; height: 60px; top: 60%; left: -200px; animation-delay: 10s; }
+        @keyframes moveCloud { from { transform: translateX(-150px); } to { transform: translateX(calc(100vw + 200px)); } }
+
+        nav {
+            background-color: #333;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+        }
+        .nav-links { display: flex; gap: 25px; }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            color: #007bff;
+            border-color: #007bff;
+            background: #2d2d2d;
+        }
+
+        .section-container {
+            max-width: 900px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .post-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+         .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        .pagination a {
+            padding: 10px 18px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .pagination a:hover {
+            background: white;
+            color: #007bff;
+            border: 2px solid #007bff;
+        }
+        .pagination .disabled {
+            background: #aaaaaa;
+            cursor: not-allowed;
+            border-color: #999;
+        }
+        .pagination .disabled:hover {
+            background: #aaaaaa;
+            color: white;
+            border: none;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 50px;
+        }
+
+        .follow-btn {
+            background: #ff0000 !important;
+            color: white !important;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 2px solid #ff0000 !important;
+            transition: 0.3s;
+        }
+        .follow-btn:hover {
+            background: white !important;
+            color: #ff0000 !important;
+        }
+
+        @media (max-width: 500px) {
+        .typing-text {
+            font-size: 1.3em;
+            line-height: 1.3;
+            }
+        }
+
+
+         /* Ubah tombol Follow jadi icon Love saat mobile */
+        @media (max-width: 600px) {
+        .follow-btn {
+            font-size: 0; /* sembunyikan teks */
+            width: 45px;
+            height: 45px;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+
+        .follow-btn::before {
+            content: "❤";
+            font-size: 25px;
+            color: white;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+        header h1 {
+            font-size: 2.3em;
+            }
+        .typing-text {
+            font-size: 1.1em;
+            }
+        }
+
+        /* Mengurangi tinggi header di mobile */
+@media (max-width: 600px) {
+    header {
+        min-height: 160px; /* dari 230px → lebih pas */
+        padding: 25px 15px; /* dari 40px → lebih kecil */
+    }
+
+    header h1 {
+        font-size: 2.3em; /* biar proposional */
+        margin-bottom: 6px;
+    }
+
+    .typing-text {
+        font-size: 1.05em;
+        max-width: 95%;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="clouds">
+            <div class="cloud"></div>
+            <div class="cloud"></div>
+            <div class="cloud"></div>
+        </div>
+
+        <h1>Projects</h1>
+        <div class="typing-text" id="typing"></div>
+    </header>
+
+    <nav>
+        
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="Projects.html" onclick="event.preventDefault(); alert('Kan ini menu Projectsnya sayang 😘')">Projects</a>
+            <a href="blog.html">Blog</a>
+            <a href="https://instagram.com/dnstwn._" class="follow-btn" target="_blank" rel="noopener">Follow</a>
+        </div>
+    </nav>
+
+    <div class="section-container">
+        <h2>Daftar Project</h2>
+
+        <div class="post-card">
+            <h2>Project 1</h2>
+            <p>Apaan Yak</p>
+        </div>
+
+        <div class="post-card">
+            <h2>Project 2</h2>
+            <p>Apaan Tuhh </p>
+        </div>
+
+        <div class="post-card">
+            <h2>Project 3</h2>
+            <p>Apaan Nihh</p>
+        </div>
+
+        <div class="pagination">
+            <a class="prev disabled">Previous</a>
+            <a class="prev disabled">Next</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Dendi Setiawan. Semua hak dilindungi.</p>
+    </footer>
+
+<script>
+    const text = "Halaman Projects Saya 🎯";
+    let index = 0;
+    function typeEffect() {
+        const typingElement = document.getElementById("typing");
+        if (index < text.length) {
+            typingElement.textContent += text.charAt(index);
+            index++;
+            setTimeout(typeEffect, 80);
+        }
+    }
+    window.onload = typeEffect;
+</script>
+
+</body>
+</html>
